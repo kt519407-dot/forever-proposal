@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Will You Be My Forever? 💖✨</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 50%, #780206 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    /* Floating Background Hearts */
+    .heart-bg {
+      position: absolute;
+      top: -10vh;
+      font-size: 1.5rem;
+      animation: fall 6s linear infinite;
+      opacity: 0.7;
+      z-index: 1;
+    }
+    @keyframes fall {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(115vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* Glassmorphism Card */
+    .card {
+      position: relative;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+      padding: 30px 22px;
+      border-radius: 28px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      width: 100%;
+      max-width: 380px;
+      border: 3px solid #fff0f5;
+    }
+
+    .badge {
+      background: #ffe6ea;
+      color: #ff0054;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: inline-block;
+      margin-bottom: 12px;
+    }
+
+    h1 { color: #800f2f; font-size: 1.7rem; margin: 10px 0; }
+    p { color: #590d22; font-size: 1.05rem; line-height: 1.5; margin-bottom: 20px; }
+
+    /* Interactive Buttons */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      position: relative;
+      min-height: 80px;
+      margin-top: 10px;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    #yesBtn {
+      background: linear-gradient(45deg, #ff0054, #ff5400);
+      color: white;
+      box-shadow: 0 5px 20px rgba(255, 0, 84, 0.5);
+      z-index: 12;
+    }
+
+    #noBtn {
+      background: #ffffff;
+      color: #ff0054;
+      border: 2px solid #ff0054;
+      z-index: 11;
+      white-space: nowrap;
+    }
+
+    /* Photo & Video Styling */
+    .couple-photo,
+    .couple-video {
+      width: 100%;
+      max-height: 260px;
+      object-fit: cover;
+      border-radius: 20px;
+      border: 4px solid #ff4d6d;
+      box-shadow: 0 8px 20px rgba(255, 77, 109, 0.3);
+      margin: 15px 0;
+      animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.5); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    #successCard { display: none; }
+  </style>
+</head>
+<body>
+
+  <!-- Audio Element -->
+  <audio id="mitwaAudio" loop preload="auto">
+    <source src="song.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Background Hearts -->
+  <div id="heartContainer"></div>
+
+  <!-- Proposal Card -->
+  <div class="card" id="mainCard">
+    <span class="badge">✨ For My Venus Star ✨</span>
+    <div style="font-size: 3.5rem; margin: 10px 0;">🌹👑✨</div>
+    <h1>Hey Beautiful...</h1>
+    <p>You bring so much harmony, warmth, and magic into my life. I have one ultimate question for you... 💖</p>
+    <h2 style="color: #ff0054; font-size: 1.5rem; margin-bottom: 20px;">Will you be my forever? 💍✨</h2>
+    
+    <div class="buttons">
+      <button class="btn" id="yesBtn" onclick="acceptProposal()">YES! 💖</button>
+      <button class="btn" id="noBtn" onclick="moveNo()" ontouchstart="moveNo()">No 😜</button>
+    </div>
+  </div>
+
+  <!-- Success Reveal Card -->
+  <div class="card" id="successCard">
+    <div style="font-size: 3rem; margin-bottom: 5px;">🎉🥂✨</div>
+    
+    <!-- Your Photo -->
+    <img src="IMG_20260822_215524_876.jpg" alt="Us Together" class="couple-photo" id="photo">
+
+    <!-- Your Video -->
+    <video class="couple-video" controls autoplay muted>
+      <source src="video.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+
+    <h1 style="color: #ff0054; font-size: 1.5rem;">I knew it! 🥰💖</h1>
+    <p style="font-size: 1.15rem; font-weight: 600; color: #800f2f; margin-top: 10px;">
+      "Finally I fully belong to you and you are all mine now... koi bhi hme juda nhi kr skta!" 💍✨❤️
+    </p>
+  </div>
+
+  <script>
+    // Create Floating Hearts Background
+    const heartContainer = document.getElementById('heartContainer');
+    const emojis = ['💖', '🌸', '✨', '🌹', '💕', '⭐', '🍓'];
+    
+    for (let i = 0; i < 25; i++) {
+      const heart = document.createElement('div');
+      heart.className = 'heart-bg';
+      heart.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDelay = Math.random() * 5 + 's';
+      heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      heartContainer.appendChild(heart);
+    }
+
+    // Playful Dodging No Button & Growing Yes Button
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const noTexts = [
+      "Are you sure? 🥺", 
+      "Nice try! 😜", 
+      "Wrong button! 💖", 
+      "Think again! 🌸", 
+      "You can't escape! ✨",
+      "Just tap YES! 👑"
+    ];
+    let yesScale = 1;
+    let textIdx = 0;
+
+    function moveNo() {
+      const x = Math.random() * (window.innerWidth - 120);
+      const y = Math.random() * (window.innerHeight - 100);
+      noBtn.style.position = 'fixed';
+      noBtn.style.left = Math.max(15, x) + 'px';
+      noBtn.style.top = Math.max(15, y) + 'px';
+
+      noBtn.innerText = noTexts[textIdx % noTexts.length];
+      textIdx++;
+
+      yesScale += 0.18;
+      yesBtn.style.transform = `scale(${yesScale})`;
+    }
+
+    function acceptProposal() {
+      // Play Music
+      const music = document.getElementById('mitwaAudio');
+      music.play().catch(e => console.log("Audio play blocked", e));
+
+      // Switch Screens
+      document.getElementById('mainCard').style.display = 'none';
+      document.getElementById('successCard').style.display = 'block';
+    }
+  </script>
+</body>
+</html>
